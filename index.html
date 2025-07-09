@@ -1,0 +1,1677 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cars - Votre Catalogue en ligne premium</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #34495e;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --text-color: #333;
+            --text-light: #f5f5f5;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f9f9f9;
+            color: var(--text-color);
+            line-height: 1.6;
+            position: relative;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(44, 62, 80, 0.9) 0%, rgba(52, 73, 94, 0.9) 100%), 
+                        url('https://png.pngtree.com/background/20230518/original/pngtree-various-different-colored-supercars-sitting-in-a-busy-square-picture-image_2649536.jpg') no-repeat center center/cover;
+            z-index: -1;
+            opacity: 0.95;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Header */
+        header {
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 15px 0;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            margin-right: 10px;
+            color: var(--accent-color);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            align-items: center;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: var(--dark-color);
+            font-weight: 500;
+            transition: var(--transition);
+            padding: 8px 12px;
+            border-radius: 4px;
+        }
+
+        nav ul li a:hover {
+            background-color: var(--light-color);
+            color: var(--accent-color);
+        }
+
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: var(--accent-color);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+
+        /* Login/Register Modal */
+        .auth-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            z-index: 2000;
+            width: 90%;
+            max-width: 400px;
+            display: none;
+        }
+
+        .auth-modal.active {
+            display: block;
+        }
+
+        .auth-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .auth-header h3 {
+            color: var(--primary-color);
+        }
+
+        .close-auth {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--accent-color);
+        }
+
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .auth-tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+        }
+
+        .auth-tab.active {
+            border-bottom: 3px solid var(--accent-color);
+            font-weight: 600;
+            color: var(--accent-color);
+        }
+
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .auth-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: var(--transition);
+        }
+
+        .auth-btn:hover {
+            background-color: #c0392b;
+        }
+
+        .auth-switch {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 0.9rem;
+        }
+
+        .auth-switch a {
+            color: var(--accent-color);
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        /* User dropdown */
+        .user-dropdown {
+            position: relative;
+        }
+
+        .user-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            color: var(--dark-color);
+            font-weight: 500;
+        }
+
+        .user-btn i {
+            margin-left: 5px;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: white;
+            box-shadow: var(--shadow);
+            border-radius: 4px;
+            padding: 10px 0;
+            min-width: 150px;
+            display: none;
+            z-index: 1000;
+        }
+
+        .dropdown-menu.active {
+            display: block;
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 8px 15px;
+            color: var(--dark-color);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .dropdown-menu a:hover {
+            background-color: var(--light-color);
+            color: var(--accent-color);
+        }
+
+        /* Admin Panel */
+        .admin-panel {
+            display: none;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            margin: 40px auto;
+        }
+
+        .admin-panel.active {
+            display: block;
+        }
+
+        .admin-actions {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .admin-btn {
+            padding: 10px 15px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .admin-btn:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .product-form {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .product-form.active {
+            display: block;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 80px 0;
+            color: var(--text-light);
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            animation: fadeIn 1.2s ease-in-out;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            animation: fadeIn 1.4s ease-in-out;
+        }
+
+        .btn:hover {
+            background-color: #c0392b;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Products Section */
+        .products {
+            padding: 60px 0;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            margin: 40px auto;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            color: var(--primary-color);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: "";
+            display: block;
+            width: 80px;
+            height: 4px;
+            background-color: var(--accent-color);
+            margin: 15px auto 0;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .product-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .product-image {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.05);
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-title {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            color: var(--dark-color);
+        }
+
+        .product-price {
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .add-to-cart {
+            width: 100%;
+            padding: 10px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+        }
+
+        .add-to-cart:hover {
+            background-color: var(--secondary-color);
+        }
+
+        /* Cart Modal */
+        .cart-modal {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            max-width: 400px;
+            height: 100vh;
+            background-color: white;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+            z-index: 2000;
+            overflow-y: auto;
+        }
+
+        .cart-modal.active {
+            right: 0;
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .cart-header h3 {
+            margin: 0;
+        }
+
+        .close-cart {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .cart-items {
+            padding: 20px;
+        }
+
+        .cart-item {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 20px;
+        }
+
+        .cart-item-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-right: 15px;
+        }
+
+        .cart-item-details {
+            flex: 1;
+        }
+
+        .cart-item-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .cart-item-price {
+            color: var(--accent-color);
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .cart-item-quantity {
+            display: flex;
+            align-items: center;
+        }
+
+        .quantity-btn {
+            width: 25px;
+            height: 25px;
+            background-color: #f0f0f0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .quantity-input {
+            width: 40px;
+            text-align: center;
+            margin: 0 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 3px;
+        }
+
+        .remove-item {
+            background: none;
+            border: none;
+            color: #e74c3c;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .cart-total {
+            padding: 20px;
+            border-top: 1px solid #eee;
+            text-align: right;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 20px;
+            transition: var(--transition);
+        }
+
+        .checkout-btn:hover {
+            background-color: #c0392b;
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 40px 20px;
+            color: #777;
+        }
+
+        /* Overlay */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            padding: 40px 0 20px;
+            margin-top: 60px;
+        }
+
+        .footer-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .footer-column h4 {
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-column h4::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--accent-color);
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column ul li a {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--accent-color);
+            padding-left: 5px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-links a {
+            color: white;
+            background-color: var(--secondary-color);
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background-color: var(--accent-color);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            color: #bdc3c7;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+            }
+
+            .logo {
+                margin-bottom: 15px;
+            }
+
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            nav ul li {
+                margin: 5px 10px;
+            }
+
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+
+            .cart-modal {
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .btn {
+                padding: 10px 20px;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .auth-tabs {
+                flex-direction: column;
+            }
+
+            .auth-tab {
+                border-bottom: none;
+                border-left: 3px solid transparent;
+            }
+
+            .auth-tab.active {
+                border-bottom: none;
+                border-left: 3px solid var(--accent-color);
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <a href="#" class="logo">
+                <i class="fas fa-store"></i>
+                Cars
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="#">Accueil</a></li>
+                    <li><a href="#products">Modèles</a></li>
+                    <li><a href="#">Nouveautés</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li id="auth-buttons">
+                        <button id="login-btn" class="btn">Connexion</button>
+                    </li>
+                    <li id="user-menu" style="display: none;">
+                        <div class="user-dropdown">
+                            <button class="user-btn" id="user-btn">
+                                <span id="username-display"></span>
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                            <div class="dropdown-menu" id="dropdown-menu">
+                    <a href="#" id="profile-link">Profil</a>
+                                <a href="#" id="logout-btn">Déconnexion</a>
+                                <a href="#" id="admin-link" style="display: none;">Admin</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="cart-icon" id="cart-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="cart-count" id="cart-count">0</span>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Auth Modal -->
+    <div class="auth-modal" id="auth-modal">
+        <div class="auth-header">
+            <h3 id="auth-modal-title">Connexion</h3>
+            <button class="close-auth" id="close-auth">&times;</button>
+        </div>
+        <div class="auth-tabs">
+            <div class="auth-tab active" data-tab="login">Connexion</div>
+            <div class="auth-tab" data-tab="register">Inscription</div>
+            <div class="auth-tab" data-tab="seller-login" style="display: none;">Vendeur</div>
+        </div>
+        <div class="auth-form active" id="login-form">
+            <div class="form-group">
+                <label for="login-email">Email</label>
+                <input type="email" id="login-email" placeholder="Votre email">
+            </div>
+            <div class="form-group">
+                <label for="login-password">Mot de passe</label>
+                <input type="password" id="login-password" placeholder="Votre mot de passe">
+            </div>
+            <button class="auth-btn" id="login-submit">Se connecter</button>
+            <div class="auth-switch">
+                Nouveau client? <a href="#" id="switch-to-register">Créer un compte</a>
+            </div>
+            <div class="auth-switch">
+                Vous êtes vendeur? <a href="#" id="switch-to-seller">Connexion vendeur</a>
+            </div>
+        </div>
+        <div class="auth-form" id="register-form">
+            <div class="form-group">
+                <label for="register-name">Nom complet</label>
+                <input type="text" id="register-name" placeholder="Votre nom complet">
+            </div>
+            <div class="form-group">
+                <label for="register-email">Email</label>
+                <input type="email" id="register-email" placeholder="Votre email">
+            </div>
+            <div class="form-group">
+                <label for="register-password">Mot de passe</label>
+                <input type="password" id="register-password" placeholder="Créez un mot de passe">
+            </div>
+            <div class="form-group">
+                <label for="register-confirm">Confirmer le mot de passe</label>
+                <input type="password" id="register-confirm" placeholder="Confirmez votre mot de passe">
+            </div>
+            <button class="auth-btn" id="register-submit">S'inscrire</button>
+            <div class="auth-switch">
+                Déjà client? <a href="#" id="switch-to-login">Se connecter</a>
+            </div>
+        </div>
+        <div class="auth-form" id="seller-login-form">
+            <div class="form-group">
+                <label for="seller-email">Email vendeur</label>
+                <input type="email" id="seller-email" placeholder="Votre email professionnel">
+            </div>
+            <div class="form-group">
+                <label for="seller-password">Mot de passe</label>
+                <input type="password" id="seller-password" placeholder="Votre mot de passe">
+            </div>
+            <button class="auth-btn" id="seller-login-submit">Connexion vendeur</button>
+            <div class="auth-switch">
+                Vous êtes client? <a href="#" id="switch-to-client">Connexion client</a>
+            </div>
+        </div>
+    </div>
+  
+  <!-- Admin Panel -->
+    <div class="admin-panel" id="admin-panel">
+        <h2 class="section-title">Panneau d'administration</h2>
+        <div class="admin-actions">
+            <button class="admin-btn" id="add-product-btn">Ajouter une voiture</button>
+            <button class="admin-btn" id="view-products-btn">Voir les voitures</button>
+        </div>
+        <div class="product-form" id="product-form">
+            <div class="form-group">
+                <label for="product-title">Titre du produit</label>
+                <input type="text" id="product-title" placeholder="Nom du produit">
+            </div>
+            <div class="form-group">
+                <label for="product-price">Prix (€)</label>
+                <input type="number" id="product-price" placeholder="Prix" step="0.01">
+            </div>
+            <div class="form-group">
+                <label for="product-image">URL de l'image</label>
+                <input type="text" id="product-image" placeholder="URL de l'image">
+            </div>
+            <div class="form-group">
+                <label for="product-description">Description</label>
+                <textarea id="product-description" placeholder="Description du produit" rows="3"></textarea>
+            </div>
+            <button class="admin-btn" id="save-product-btn">Enregistrer</button>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Découvrez cette collection exclusive</h1>
+            <p>Des bagnoles soigneusement sélectionnés pour leur qualité; prix; puissance et leur élégance intemporelle.</p>
+            <a href="#products" class="btn">Explorer le Catalogue</a>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="products" id="products">
+        <div class="container">
+            <h2 class="section-title">Nos Produits</h2>
+            <div class="products-grid" id="products-grid">
+                <!-- Les produits seront générés dynamiquement par JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Cart Modal -->
+    <div class="cart-modal" id="cart-modal">
+        <div class="cart-header">
+            <h3>Votre Gararge</h3>
+            <button class="close-cart" id="close-cart">&times;</button>
+        </div>
+        <div class="cart-items" id="cart-items">
+            <!-- Les articles du panier seront générés dynamiquement -->
+            <div class="empty-cart">
+                <i class="fas fa-shopping-cart" style="font-size: 2rem; margin-bottom: 15px;"></i>
+                <p>Votre Garage est vide</p>
+            </div>
+        </div>
+        <div class="cart-total" id="cart-total" style="display: none;">
+            Total: <span id="total-amount">0</span> €
+        </div>
+        <button class="checkout-btn" id="checkout-btn" style="display: none;">Passer la commande</button>
+    </div>
+
+    <!-- Overlay -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-column">
+                    <h4>À propos</h4>
+                    <p>Cars est un Cataloque en ligne offrant des informations sur des voiturs de sports de qualité supérieure avec possibilité de commander et un service client exceptionnel.</p>
+                </div>
+                <div class="footer-column">
+                    <h4>Liens rapides</h4>
+                    <ul>
+                        <li><a href="#">Accueil</a></li>
+                        <li><a href="#products">Modèles</a></li>
+                        <li><a href="#">Nouveautés</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Service client</h4>
+                    <ul>
+                        <li><a href="#">Mon compte</a></li>
+                        <li><a href="#">Suivi de commande</a></li>
+                        <li><a href="services.html">Livraison</a></li>
+                        <li><a href="#">Retours</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Contact</h4>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> Bénin, Cotonou</li>
+                        <li><i class="fas fa-phone"></i> Appel: +229 0161023538 <p>Whatsapp: 41969760</p></li>
+                        <li><i class="fas fa-envelope"></i> geovannitoyhin@gmail.com</li>
+                    </ul>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 cars. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+  
+ <script>
+        // Données des produits
+        let products = [
+            {
+                id: 1,
+                title: "BMW E30 ",
+                price: 20000,
+                image: "https://static1.hotcarsimages.com/wordpress/wp-content/uploads/2020/11/bmw-e30.jpg",
+                description: "La BMW E30 passe de 0 à 100 km/h en environ 7,3 secondes avec un moteur V6 pour une belle nervosité typique des années 80."
+            },
+            {
+                id: 2,
+                title: "BMW M4 G-Power",
+                price: 140000,
+                image: "https://www.tuningblog.eu/wp-content/uploads/2024/01/2024-BMW-M4-Coupe-Tuning-G-Power-11.jpg",
+                description: "La BMW M4 G-Power est une version ultra-performante préparée V12 qui embarque un moteur 6 cylindres bi-turbo de 3.0L, poussé jusqu’à 740 chevaux. Un couple de 740 Nm, et le 0 à 100 km/h est abattu en seulement 3,2 secondes, avec une vitesse de pointe de 370 km/h. Une véritable machine de guerre, taillée pour la piste."
+            },
+            {
+                id: 3,
+                title: "Lamborghini Diablo",
+                price: 500000,
+                image: "https://www.carscoops.com/wp-content/uploads/2023/07/2023-Eccentrica-Lamborghini-Diablo-1.jpg",
+                description: "La Lamborghini Diablo est une supercar emblématique dotée d’un V12 atmosphérique 6.0 L, jusqu’à 590 ch. Atteint une vitesse de pointe de 339 km/h et le 0 à 100 km/h en environ 4,1 secondes. Avec son design agressif et son rugissement féroce, elle incarne la pure essence de la performance italienne."
+            },
+            {
+                id: 4,
+                title: "Lamborghini Sesto",
+                price: 4000000,
+                image: "https://i.imgur.com/NgFR2Zh.jpg",
+                description: "La Sesto Elemento est une supercar radicale V10 de 5,2 L de 570 ch, en fibre de carbone. Un 0 à 100 km/h en 2,5 secondes avec 325 km/h. Non homologuée pour la route, elle est taillée exclusivement pour le circuit."
+            },
+            {
+                id: 5,
+                title: "Audi RS6",
+                price: 170000,
+                image: "https://hips.hearstapps.com/hmg-prod/images/2024-audi-rs6-performance-motion-front-1669663114.jpg",
+                description: "L’Audi RS6 est un break ultra-sportif combinant V8 biturbo de 4.0 L de 600 ch et 800 Nm de couple, avec une transmission intégrale quattro.  Abat le 0 à 100 km/h en 3,6 secondes, pour une vitesse de 250 km/h."
+            },
+            {
+                id: 6,
+                title: "Audi RS5",
+                price: 120000,
+                image: "https://tse2.mm.bing.net/th/id/OIP.FXLzrYDm_0QBWei5pF2gbgHaEK?rs=1&pid=ImgDetMain&o=7&rm=3",
+                description: "La gamme Audi RS5 avec des accélérations de 0 à 100 km/h allant de 4,5 secondes. Dotées de moteurs puissants (V5, V6, V8), d’une transmission intégrale quattro et d’un design musclé, ces voitures allient sportivité extrême et confort haut de gamme."
+            },
+            {
+                id: 7,
+                title: "Chevrolette Camaro",
+                price: 70000,
+                image: "https://tse3.mm.bing.net/th/id/OIP.SQTrQZZFY3SjYAivT4IucgHaEK?rs=1&pid=ImgDetMain&o=7&rm=3",
+                description: "La Chevrolet Camaro est une hypercar américaine emblématique, V8 de 6,2 jusqu’à 461 ch, avec un 0 à 100 km/h en environ 4,6 secondes et une vitesse de 258 km/h. Elle incarne la fusion entre design rétro et technologies modernes, taillée pour la route comme pour le plaisir pur."
+            },
+            {
+                id: 8,
+                title: "TOYOTA Supra",
+                price: 75000,
+                image: "https://th.bing.com/th/id/R.751982efc3e11304628d15d60b5949fb?rik=MAIzZmHvPbmOog&pid=ImgRaw&r=0",
+                description: "La Toyota Supra est une sportive japonaise emblématique, moteur 6 cylindres en ligne turbo de 3.0 L jusqu’à 435 ch. Elle passe de 0 à 100 km/h en environ 4 secondes et atteint une vitesse de 270 km/h. Elle incarne la performance accessible et le plaisir de conduite pur."
+            },
+            {
+                id: 9,
+                title: "Koenigsegg Absolute Jesko",
+                price: 4500000,
+                image: "https://exclusivecarregistry.com/render-images?imgid=458515&thumb=1",
+                description: "La Jesko Absolut est la supercar la plus rapide jamais conçue par Koenigsegg. Dotée d’un V8 biturbo de 5.0 L, elle développe jusqu’à 1625 ch et 1500 Nm de couple. Aérodynamisme optimisé, elle vise une vitesse de 500 km/h. Le 0 à 100 km/h est estimé à environ 2,5 secondes. Produite en série limitée, elle incarne l’extrême performance et l’innovation suédoise."
+            },
+            {
+                id: 10,
+                title: "Bugatti Chiron",
+                price: 6000000,
+                image: "https://th.bing.com/th/id/R.516a7b41703efda18faa8fc2cac6f228?rik=BZvuDhhn1G0PcA&pid=ImgRaw&r=0",
+                description: "La Bugatti Chiron est une supercar française propulsée par un moteur W16 quadri-turbo de 8.0 L développant 1 500 ch et 1 600 Nm de couple. Elle réalise le 0 à 100 km/h en seulement 2,4 secondes et atteint une vitesse maximale de 498 km/h. Elle incarne la fusion entre l’artisanat de luxe et la performance extrême."
+            },
+            {
+                id: 11,
+                title: "Bugatti Tourbillon",
+                price: 7500000,
+                image: "https://tse3.mm.bing.net/th/id/OIP.mjqPfBSVGkvQFtkCYBgSSAHaEc?rs=1&pid=ImgDetMain&o=7&rm=3",
+                description: "La Bugatti Tourbillon, est une hypercar hybride V16 atmosphérique de 8,3 L (1 000 ch) à trois moteurs électriques pour une puissance totale de 1 800 ch. Elle vise une vitesse maximale de 490 km/h et réalise le 0 à 100 km/h en environ 2 secondes. 250 exemplaires, incarnant une nouvelle ère pour Bugatti."
+            },
+            {
+                id: 12,
+                title: "Chevrolet Corvette c8",
+                price: 105000,
+                image: "https://tse1.mm.bing.net/th/id/OIP.5NG9OZ1VsqqHPrq6paZCBAAAAA?rs=1&pid=ImgDetMain&o=7&rm=3",
+                description: "La Chevrolet Corvette C8 est la première Corvette à moteur central V8 atmosphérique de 6,2 L développant 482 ch et 613 Nm, permettant un 0 à 100 km/h en environ 3,5 secondes et une vitesse de pointe de 296 km/h."
+            },
+            {
+                id: 13,
+                title: "McLaren 750 LT",
+                price: 800000,
+                image: "https://th.bing.com/th/id/R.cf24b3f06688318b837e30b2bac20353?rik=%2fw9xBCkiiOHLpQ&pid=ImgRaw&r=0",
+                description: "La McLaren 750LT est une version affûtée de la 750S, avec un V8 biturbo de 4.0 L développant 740 ch et 800 Nm, et un aaérodynamisme optimisé et sa boîte robotisée à 7 rapports, elle réalise le 0 à 100 km/h en 2,8 secondes et atteint une vitesse de 332 km/h. "
+            },
+            {
+                id: 14,
+                title: "BMW M8 Supercar",
+                price: 300000,
+                image: "https://wallpapercave.com/wp/wp12056670.jpg",
+                description: "La BMW M8 Compétition est une supercar ultra-sportif propulsé par un V10 biturbo de 4,4 L développant 725 ch et 950 Nm de couple. Grâce à sa transmission intégrale M xDrive et sa boîte automatique à 8 rapports, elle réalise le 0 à 100 km/h en seulement 2,8 secondes, avec une vitesse de 305 km/h."
+            },
+            {
+                id: 15,
+                title: "Dodge Charger STR Hellcat",
+                price: 100000,
+                image: "https://tse3.mm.bing.net/th/id/OIP.86zbUoDaeXzQmWW9CDhbZQHaEo?rs=1&pid=ImgDetMain&o=7&rm=3",
+                description: "La Hellcat est équipée d’un V8 suralimenté de 6,2 L, 717 ch et 881 Nm de couple, avec une vitesse de 314 km/h. Elle réalise le 0 à 100 km/h en environ 3,6 secondes. Son design musclé, sa sonorité bestiale et ses performances brutales en font une icône des muscle cars américains."
+            },
+        ];
+
+        // Panier
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        // Utilisateurs
+        let users = JSON.parse(localStorage.getItem('users')) || [];
+        let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
+        let isSeller = JSON.parse(localStorage.getItem('isSeller')) || false;
+
+        // Vendeurs (en production, cela serait sécurisé côté serveur)
+        const sellers = [
+            { email: "vendeur@elegance.com", password: "vendeur123" }
+        ];
+
+        // Éléments DOM
+        const productsGrid = document.getElementById('products-grid');
+        const cartIcon = document.getElementById('cart-icon');
+        const cartCount = document.getElementById('cart-count');
+        const cartModal = document.getElementById('cart-modal');
+        const closeCart = document.getElementById('close-cart');
+        const cartItems = document.getElementById('cart-items');
+        const cartTotal = document.getElementById('cart-total');
+        const totalAmount = document.getElementById('total-amount');
+        const checkoutBtn = document.getElementById('checkout-btn');
+        const overlay = document.getElementById('overlay');
+        const loginBtn = document.getElementById('login-btn');
+        const authModal = document.getElementById('auth-modal');
+        const closeAuth = document.getElementById('close-auth');
+        const authTabs = document.querySelectorAll('.auth-tab');
+        const authForms = document.querySelectorAll('.auth-form');
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+        const sellerLoginForm = document.getElementById('seller-login-form');
+        const loginSubmit = document.getElementById('login-submit');
+        const registerSubmit = document.getElementById('register-submit');
+        const sellerLoginSubmit = document.getElementById('seller-login-submit');
+        const switchToRegister = document.getElementById('switch-to-register');
+        const switchToLogin = document.getElementById('switch-to-login');
+        const switchToSeller = document.getElementById('switch-to-seller');
+        const switchToClient = document.getElementById('switch-to-client');
+        const authButtons = document.getElementById('auth-buttons');
+        const userMenu = document.getElementById('user-menu');
+        const userBtn = document.getElementById('user-btn');
+        const dropdownMenu = document.getElementById('dropdown-menu');
+        const usernameDisplay = document.getElementById('username-display');
+        const logoutBtn = document.getElementById('logout-btn');
+        const adminLink = document.getElementById('admin-link');
+        const adminPanel = document.getElementById('admin-panel');
+        const addProductBtn = document.getElementById('add-product-btn');
+        const viewProductsBtn = document.getElementById('view-products-btn');
+        const productForm = document.getElementById('product-form');
+        const productTitleInput = document.getElementById('product-title');
+        const productPriceInput = document.getElementById('product-price');
+        const productImageInput = document.getElementById('product-image');
+        const productDescriptionInput = document.getElementById('product-description');
+        const saveProductBtn = document.getElementById('save-product-btn');
+        const authModalTitle = document.getElementById('auth-modal-title');
+
+        // Afficher les produits
+        function displayProducts() {
+            productsGrid.innerHTML = '';
+            products.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.classList.add('product-card');
+                productCard.innerHTML = `
+                    <div class="product-image">
+                        <img src="${product.image}" alt="${product.title}">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">${product.title}</h3>
+                        <p class="product-price">${product.price.toFixed(2)} €</p>
+                        <p class="product-description" style="font-size: 0.9rem; color: #666; margin-bottom: 15px;">${product.description}</p>
+                        <button class="add-to-cart" data-id="${product.id}">Ajouter au panier</button>
+                    </div>
+                `;
+                productsGrid.appendChild(productCard);
+            });
+
+            // Ajouter les événements aux boutons "Ajouter au panier"
+            document.querySelectorAll('.add-to-cart').forEach(button => {
+                button.addEventListener('click', addToCart);
+            });
+        }
+
+        // Ajouter au panier
+        function addToCart(e) {
+            if (!currentUser) {
+                alert("Veuillez vous connecter pour ajouter des articles au panier.");
+                openAuthModal('login');
+                return;
+            }
+
+            const productId = parseInt(e.target.getAttribute('data-id'));
+            const product = products.find(p => p.id === productId);
+            
+            // Vérifier si le produit est déjà dans le panier
+            const existingItem = cart.find(item => item.id === productId);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    ...product,
+                    quantity: 1
+                });
+            }
+            
+            updateCart();
+            
+            // Animation du bouton
+            e.target.textContent = 'Ajouté !';
+            e.target.style.backgroundColor = '#27ae60';
+            setTimeout(() => {
+                e.target.textContent = 'Ajouter au panier';
+                e.target.style.backgroundColor = '';
+            }, 1000);
+        }
+
+        // Mettre à jour le panier
+        function updateCart() {
+            // Sauvegarder dans le localStorage
+            localStorage.setItem('cart', JSON.stringify(cart));
+            
+            // Mettre à jour le compteur
+            const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+            cartCount.textContent = totalItems;
+            
+            // Afficher les articles du panier
+            renderCartItems();
+        }
+
+        // Afficher les articles du panier
+        function renderCartItems() {
+            if (cart.length === 0) {
+                cartItems.innerHTML = `
+                    <div class="empty-cart">
+                        <i class="fas fa-shopping-cart" style="font-size: 2rem; margin-bottom: 15px;"></i>
+                        <p>Votre panier est vide</p>
+                    </div>
+                `;
+                cartTotal.style.display = 'none';
+                checkoutBtn.style.display = 'none';
+            } else {
+                cartItems.innerHTML = '';
+                cart.forEach(item => {
+                    const cartItem = document.createElement('div');
+                    cartItem.classList.add('cart-item');
+                    cartItem.innerHTML = `
+                        <img src="${item.image}" alt="${item.title}" class="cart-item-image">
+                        <div class="cart-item-details">
+                            <h4 class="cart-item-title">${item.title}</h4>
+                            <p class="cart-item-price">${item.price.toFixed(2)} €</p>
+                            <div class="cart-item-quantity">
+                                <button class="quantity-btn decrease" data-id="${item.id}">-</button>
+                                <input type="number" class="quantity-input" value="${item.quantity}" min="1" data-id="${item.id}">
+                                <button class="quantity-btn increase" data-id="${item.id}">+</button>
+                                <button class="remove-item" data-id="${item.id}"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                    `;
+                    cartItems.appendChild(cartItem);
+                });
+
+                // Calculer le total
+                const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                totalAmount.textContent = total.toFixed(2);
+                
+                cartTotal.style.display = 'block';
+                checkoutBtn.style.display = 'block';
+                
+                // Ajouter les événements aux boutons de quantité
+                document.querySelectorAll('.decrease').forEach(btn => {
+                    btn.addEventListener('click', decreaseQuantity);
+                });
+                
+                document.querySelectorAll('.increase').forEach(btn => {
+                    btn.addEventListener('click', increaseQuantity);
+                });
+                
+                document.querySelectorAll('.quantity-input').forEach(input => {
+                    input.addEventListener('change', updateQuantity);
+                });
+                
+                document.querySelectorAll('.remove-item').forEach(btn => {
+                    btn.addEventListener('click', removeItem);
+                });
+            }
+        }
+
+        // Diminuer la quantité
+        function decreaseQuantity(e) {
+            const productId = parseInt(e.target.getAttribute('data-id'));
+            const item = cart.find(item => item.id === productId);
+            
+            if (item.quantity > 1) {
+                item.quantity -= 1;
+            } else {
+                cart = cart.filter(item => item.id !== productId);
+            }
+            
+            updateCart();
+        }
+
+        // Augmenter la quantité
+        function increaseQuantity(e) {
+            const productId = parseInt(e.target.getAttribute('data-id'));
+            const item = cart.find(item => item.id === productId);
+            item.quantity += 1;
+            updateCart();
+        }
+
+        // Mettre à jour la quantité via l'input
+        function updateQuantity(e) {
+            const productId = parseInt(e.target.getAttribute('data-id'));
+            const item = cart.find(item => item.id === productId);
+            const newQuantity = parseInt(e.target.value);
+            
+            if (newQuantity >= 1) {
+                item.quantity = newQuantity;
+            } else {
+                item.quantity = 1;
+                e.target.value = 1;
+            }
+            
+            updateCart();
+        }
+
+        // Supprimer un article
+        function removeItem(e) {
+            const productId = parseInt(e.target.getAttribute('data-id'));
+            cart = cart.filter(item => item.id !== productId);
+            updateCart();
+        }
+
+        // Passer la commande
+        function checkout() {
+            if (!currentUser) {
+                alert("Veuillez vous connecter pour passer une commande.");
+                openAuthModal('login');
+                return;
+            }
+
+            if (cart.length > 0) {
+                alert(`Commande passée avec succès! Total: ${totalAmount.textContent} €`);
+                cart = [];
+                updateCart();
+                closeCartModal();
+            }
+        }
+
+        // Ouvrir le panier
+        function openCartModal() {
+            cartModal.classList.add('active');
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Fermer le panier
+        function closeCartModal() {
+            cartModal.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Ouvrir la modal d'authentification
+        function openAuthModal(tab = 'login') {
+            authModal.classList.add('active');
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            switchTab(tab);
+        }
+
+        // Fermer la modal d'authentification
+        function closeAuthModal() {
+            authModal.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Changer d'onglet dans la modal d'authentification
+        function switchTab(tab) {
+            authTabs.forEach(t => {
+                if (t.getAttribute('data-tab') === tab) {
+                    t.classList.add('active');
+                } else {
+                    t.classList.remove('active');
+                }
+            });
+
+            authForms.forEach(form => {
+                if (form.id === `${tab}-form`) {
+                    form.classList.add('active');
+                } else {
+                    form.classList.remove('active');
+                }
+            });
+
+            if (tab === 'login') {
+                authModalTitle.textContent = 'Connexion';
+            } else if (tab === 'register') {
+                authModalTitle.textContent = 'Inscription';
+            } else if (tab === 'seller-login') {
+                authModalTitle.textContent = 'Connexion Vendeur';
+            }
+        }
+
+        // Connexion utilisateur
+        function loginUser(email, password) {
+            const user = users.find(u => u.email === email && u.password === password);
+            if (user) {
+                currentUser = user;
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                localStorage.setItem('isSeller', false);
+                isSeller = false;
+                updateUserUI();
+                closeAuthModal();
+                return true;
+            }
+            return false;
+        }
+  
+ // Connexion vendeur
+        function loginSeller(email, password) {
+            const seller = sellers.find(s => s.email === email && s.password === password);
+            if (seller) {
+                currentUser = { name: "Vendeur", email };
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                localStorage.setItem('isSeller', true);
+                isSeller = true;
+                updateUserUI();
+                closeAuthModal();
+                return true;
+            }
+            return false;
+        }
+
+        // Inscription utilisateur
+        function registerUser(name, email, password) {
+            // Vérifier si l'utilisateur existe déjà
+            if (users.some(u => u.email === email)) {
+                return false;
+            }
+
+            const newUser = {
+                id: Date.now(),
+                name,
+                email,
+                password
+            };
+
+            users.push(newUser);
+            localStorage.setItem('users', JSON.stringify(users));
+
+            currentUser = newUser;
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            localStorage.setItem('isSeller', false);
+            isSeller = false;
+            updateUserUI();
+            closeAuthModal();
+            return true;
+        }
+
+        // Déconnexion
+        function logout() {
+            currentUser = null;
+            isSeller = false;
+            localStorage.removeItem('currentUser');
+            localStorage.removeItem('isSeller');
+            updateUserUI();
+            adminPanel.classList.remove('active');
+            productForm.classList.remove('active');
+        }
+
+        // Mettre à jour l'interface utilisateur en fonction de l'état de connexion
+        function updateUserUI() {
+            if (currentUser) {
+                authButtons.style.display = 'none';
+                userMenu.style.display = 'block';
+                usernameDisplay.textContent = currentUser.name.split(' ')[0]; // Afficher seulement le prénom
+                
+                // Afficher le lien admin si c'est un vendeur
+                if (isSeller) {
+                    adminLink.style.display = 'block';
+                    adminPanel.classList.add('active');
+                } else {
+                    adminLink.style.display = 'none';
+                    adminPanel.classList.remove('active');
+                }
+            } else {
+                authButtons.style.display = 'block';
+                userMenu.style.display = 'none';
+            }
+        }
+
+        // Ajouter un nouveau produit
+        function addProduct(title, price, image, description) {
+            const newProduct = {
+                id: Date.now(),
+                title,
+                price: parseFloat(price),
+                image,
+                description
+            };
+
+            products.push(newProduct);
+            localStorage.setItem('products', JSON.stringify(products));
+            displayProducts();
+            productForm.classList.remove('active');
+            clearProductForm();
+        }
+
+        // Effacer le formulaire de produit
+        function clearProductForm() {
+            productTitleInput.value = '';
+            productPriceInput.value = '';
+            productImageInput.value = '';
+            productDescriptionInput.value = '';
+        }
+
+        // Initialisation
+        function init() {
+            // Charger les produits depuis le localStorage s'ils existent
+            const savedProducts = JSON.parse(localStorage.getItem('products'));
+            if (savedProducts && savedProducts.length > 0) {
+                products = savedProducts;
+            }
+
+            displayProducts();
+            updateCart();
+            updateUserUI();
+
+            // Événements du panier
+            cartIcon.addEventListener('click', openCartModal);
+            closeCart.addEventListener('click', closeCartModal);
+            overlay.addEventListener('click', closeCartModal);
+            checkoutBtn.addEventListener('click', checkout);
+
+            // Événements d'authentification
+            loginBtn.addEventListener('click', () => openAuthModal('login'));
+            closeAuth.addEventListener('click', closeAuthModal);
+            authTabs.forEach(tab => {
+                tab.addEventListener('click', () => switchTab(tab.getAttribute('data-tab')));
+            });
+            switchToRegister.addEventListener('click', (e) => {
+                e.preventDefault();
+                switchTab('register');
+            });
+            switchToLogin.addEventListener('click', (e) => {
+                e.preventDefault();
+                switchTab('login');
+            });
+            switchToSeller.addEventListener('click', (e) => {
+                e.preventDefault();
+                switchTab('seller-login');
+            });
+            switchToClient.addEventListener('click', (e) => {
+                e.preventDefault();
+                switchTab('login');
+            });
+            loginSubmit.addEventListener('click', () => {
+                const email = document.getElementById('login-email').value;
+                const password = document.getElementById('login-password').value;
+                
+                if (!email || !password) {
+                    alert("Veuillez remplir tous les champs");
+                    return;
+                }
+                
+                if (loginUser(email, password)) {
+                    alert("Connexion réussie!");
+                } else {
+                    alert("Email ou mot de passe incorrect");
+                }
+            });
+            registerSubmit.addEventListener('click', () => {
+                const name = document.getElementById('register-name').value;
+                const email = document.getElementById('register-email').value;
+                const password = document.getElementById('register-password').value;
+                const confirm = document.getElementById('register-confirm').value;
+                
+                if (!name || !email || !password || !confirm) {
+                    alert("Veuillez remplir tous les champs");
+                    return;
+                }
+                
+                if (password !== confirm) {
+                    alert("Les mots de passe ne correspondent pas");
+                    return;
+                }
+                
+                if (registerUser(name, email, password)) {
+                    alert("Inscription réussie! Vous êtes maintenant connecté.");
+                } else {
+                    alert("Un compte avec cet email existe déjà");
+                }
+            });
+            sellerLoginSubmit.addEventListener('click', () => {
+                const email = document.getElementById('seller-email').value;
+                const password = document.getElementById('seller-password').value;
+                
+                if (!email || !password) {
+                    alert("Veuillez remplir tous les champs");
+                    return;
+                }
+                
+                if (loginSeller(email, password)) {
+                    alert("Connexion vendeur réussie!");
+                } else {
+                    alert("Email ou mot de passe incorrect");
+                }
+            });
+
+            // Événements du menu utilisateur
+            userBtn.addEventListener('click', () => {
+                dropdownMenu.classList.toggle('active');
+            });
+            logoutBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                logout();
+                dropdownMenu.classList.remove('active');
+            });
+            adminLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                adminPanel.classList.toggle('active');
+                dropdownMenu.classList.remove('active');
+            });
+
+            // Événements du panneau admin
+            addProductBtn.addEventListener('click', () => {
+                productForm.classList.add('active');
+            });
+            viewProductsBtn.addEventListener('click', () => {
+                productForm.classList.remove('active');
+            });
+            saveProductBtn.addEventListener('click', () => {
+                const title = productTitleInput.value;
+                const price = productPriceInput.value;
+                const image = productImageInput.value;
+                const description = productDescriptionInput.value;
+                
+                if (!title || !price || !image || !description) {
+                    alert("Veuillez remplir tous les champs");
+                    return;
+                }
+                
+                addProduct(title, price, image, description);
+                alert("Produit ajouté avec succès!");
+            });
+
+            // Fermer les menus quand on clique ailleurs
+            document.addEventListener('click', (e) => {
+                if (!userBtn.contains(e.target) && !dropdownMenu.contains(e.target)) {
+                    dropdownMenu.classList.remove('active');
+                }
+            });
+        }
+
+        // Démarrer l'application
+        init();
+    </script>
+</body>
+</html>
